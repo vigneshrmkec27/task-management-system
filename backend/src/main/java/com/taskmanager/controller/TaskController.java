@@ -14,6 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import java.nio.charset.StandardCharsets;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -124,4 +128,51 @@ public class TaskController {
         List<TaskResponse> tasks = taskService.getTasksByDate(user, date);
         return ResponseEntity.ok(tasks);
     }
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportTasksToCsv(Authentication authentication) {
+
+        User user = userService.getUserByUsername(authentication.getName());
+
+        List<TaskResponse> tasks = taskService.getAllTasks(user, 0, Integer.MAX_VALUE)
+                .getContent();
+
+        StringBuilder csv = new StringBuilder();
+
+// ✅ PLACE THIS LINE HERE (CSV HEADER)
+        csv.append("ID,Task Name,Description,Status,Priority,Due Date,Created Date,Updated Date\n");
+
+
+        for (TaskResponse task : tasks) {
+            csv.append(task.getId()).append(",")
+                    .append(escape(task.getTaskName())).append(",")   // ✅ taskName
+                    .append(escape(task.getDescription())).append(",")
+                    .append(task.getStatus()).append(",")
+                    .append(task.getPriority()).append(",")
+                    .append(task.getDueDate()).append(",")
+                    .append(task.getCreatedDate()).append(",")        // ✅ createdDate
+                    .append(task.getUpdatedDate()).append("\n");      // ✅ updatedDate
+        }
+
+
+
+        byte[] csvBytes = csv.toString().getBytes(StandardCharsets.UTF_8);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+        headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=tasks.csv");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(csvBytes);
+    }
+    private String escape(String value) {
+        if (value == null) {
+            return "";
+        }
+        return "\"" + value.replace("\"", "\"\"") + "\"";
+    }
+
+
 }

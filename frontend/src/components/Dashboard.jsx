@@ -103,6 +103,38 @@ const Dashboard = ({ user, darkMode, setDarkMode, showNotification }) => {
         setShowDetailModal(false);
         setSelectedTask(null);
     };
+    // ✅ PUT IT HERE
+    const handleDownloadReport = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/api/tasks/export', {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Download failed');
+            }
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tasks_report.csv';
+            document.body.appendChild(a);
+            a.click();
+
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error(error);
+            showNotification('Failed to download report', 'error');
+        }
+    };
+
+
 
     const stats = getTaskStats(tasks);
     const indexOfLastTask = currentPage * tasksPerPage;
@@ -190,6 +222,15 @@ const Dashboard = ({ user, darkMode, setDarkMode, showNotification }) => {
                             <Plus className="w-5 h-5" />
                             <span>New Task</span>
                         </button>
+                        <button
+                            onClick={handleDownloadReport}
+                            className="px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition flex items-center space-x-2 font-semibold shadow-lg"
+                        >
+                            <Calendar className="w-5 h-5" />
+                            <span>Download Report</span>
+                        </button>
+
+
                     </div>
                 </div>
             </header>
@@ -330,6 +371,7 @@ const Dashboard = ({ user, darkMode, setDarkMode, showNotification }) => {
                     showNotification={showNotification}
                 />
             )}
+
 
             {showDetailModal && selectedTask && (
                 <TaskDetail
