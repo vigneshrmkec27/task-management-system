@@ -55,7 +55,8 @@ function App() {
     };
 
     return (
-        <>
+        <div className="min-h-screen relative overflow-hidden">
+            {/* Global Notification */}
             {notification && (
                 <Notification
                     message={notification.message}
@@ -64,33 +65,36 @@ function App() {
                 />
             )}
 
-            {currentView === 'login' && (
-                <Login
-                    onLoginSuccess={handleLoginSuccess}
-                    onSwitchToRegister={() => setCurrentView('register')}
-                    darkMode={darkMode}
-                    showNotification={showNotification}
-                />
-            )}
+            {/* View Container */}
+            <div className="min-h-screen transition-opacity duration-300 ease-in-out">
+                {currentView === 'login' && (
+                    <Login
+                        onLoginSuccess={handleLoginSuccess}
+                        onSwitchToRegister={() => setCurrentView('register')}
+                        darkMode={darkMode}
+                        showNotification={showNotification}
+                    />
+                )}
 
-            {currentView === 'register' && (
-                <Register
-                    onRegisterSuccess={handleRegisterSuccess}
-                    onSwitchToLogin={() => setCurrentView('login')}
-                    darkMode={darkMode}
-                    showNotification={showNotification}
-                />
-            )}
+                {currentView === 'register' && (
+                    <Register
+                        onRegisterSuccess={handleRegisterSuccess}
+                        onSwitchToLogin={() => setCurrentView('login')}
+                        darkMode={darkMode}
+                        showNotification={showNotification}
+                    />
+                )}
 
-            {currentView === 'dashboard' && user && (
-                <Dashboard
-                    user={user}
-                    darkMode={darkMode}
-                    setDarkMode={setDarkMode}
-                    showNotification={showNotification}
-                />
-            )}
-        </>
+                {currentView === 'dashboard' && user && (
+                    <Dashboard
+                        user={user}
+                        darkMode={darkMode}
+                        setDarkMode={setDarkMode}
+                        showNotification={showNotification}
+                    />
+                )}
+            </div>
+        </div>
     );
 }
 

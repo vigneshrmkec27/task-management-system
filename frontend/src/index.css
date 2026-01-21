@@ -2,19 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
-* {
+/* --------------------------------------------------
+   CSS Reset & Base
+-------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
 }
 
 body {
-    margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #f9fafb;
+    color: #111827;
+}
+
+.dark body {
+    background-color: #030712;
+    color: #f9fafb;
 }
 
 code {
@@ -22,28 +39,31 @@ code {
     monospace;
 }
 
-/* Scrollbar Styles */
+/* --------------------------------------------------
+   Scrollbar Styling (Modern & Subtle)
+-------------------------------------------------- */
+
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #e5e7eb;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
+    background: #9ca3af;
+    border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    background: #6b7280;
 }
 
-/* Dark mode scrollbar */
+/* Dark Mode Scrollbar */
 .dark ::-webkit-scrollbar-track {
-    background: #1f2937;
+    background: #020617;
 }
 
 .dark ::-webkit-scrollbar-thumb {
@@ -54,26 +74,33 @@ code {
     background: #6b7280;
 }
 
-/* Line clamp utility */
-.line-clamp-2 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-}
+/* --------------------------------------------------
+   Global Transitions (Safe + Intentional)
+-------------------------------------------------- */
 
-/* Smooth transitions */
 * {
-    transition-property: background-color, border-color, color, fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: background-color, border-color, color, fill, stroke,
+    box-shadow, transform, opacity;
     transition-duration: 150ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Animation keyframes */
+/* Disable transitions for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* --------------------------------------------------
+   Animations
+-------------------------------------------------- */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(-6px);
     }
     to {
         opacity: 1;
@@ -81,24 +108,56 @@ code {
     }
 }
 
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 .animate-fadeIn {
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.25s ease-out;
 }
 
-/* Custom focus styles */
-input:focus,
-textarea:focus,
-select:focus,
-button:focus {
+.animate-zoomIn {
+    animation: zoomIn 0.2s ease-out;
+}
+
+/* --------------------------------------------------
+   Focus Styles (Accessible but Clean)
+-------------------------------------------------- */
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
     outline: none;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.6);
+    border-radius: 0.5rem;
 }
 
-/* Tailwind classes that might not be available */
+/* --------------------------------------------------
+   Utilities
+-------------------------------------------------- */
+
 @layer utilities {
     .line-clamp-2 {
         overflow: hidden;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
+    }
+
+    .glass {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+    }
+
+    .dark .glass {
+        background: rgba(17, 24, 39, 0.7);
     }
 }

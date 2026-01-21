@@ -25,17 +25,17 @@ export const taskService = {
         await api.delete(`/api/tasks/${id}`);
     },
 
-    searchTasks: async (query, page = 0, size = 100) => {
+    searchTasks: async (query, page = 0, size = 10) => {
         const response = await api.get(`/api/tasks/search?query=${query}&page=${page}&size=${size}`);
         return response.data;
     },
 
-    filterByPriority: async (priority, page = 0, size = 100) => {
+    filterByPriority: async (priority, page = 0, size = 10) => {
         const response = await api.get(`/api/tasks/filter/priority/${priority}?page=${page}&size=${size}`);
         return response.data;
     },
 
-    filterByStatus: async (status, page = 0, size = 100) => {
+    filterByStatus: async (status, page = 0, size = 10) => {
         const response = await api.get(`/api/tasks/filter/status/${status}?page=${page}&size=${size}`);
         return response.data;
     },

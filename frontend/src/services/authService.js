@@ -23,6 +23,12 @@ export const authService = {
         return response.data;
     },
 
+    // ✅ NEW — uses SAME endpoint, correct HTTP verb
+    updateProfile: async (updatedUser) => {
+        const response = await api.put('/api/user/profile', updatedUser);
+        return response.data;
+    },
+
     isAuthenticated: () => {
         return !!localStorage.getItem('token');
     },

@@ -52,61 +52,73 @@ const TaskModal = ({ task, onClose, onSuccess, showNotification }) => {
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                <div className="sticky top-0 bg-white dark:bg-gray-800 border-b dark:border-gray-700 px-6 py-4 flex items-center justify-between z-10">
-                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-900 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 animate-in fade-in zoom-in-95">
+                {/* Header */}
+                <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-5 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+                    <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">
                         {task ? 'Edit Task' : 'Create New Task'}
                     </h2>
                     <button
                         onClick={onClose}
                         disabled={loading}
-                        className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition disabled:opacity-50"
+                        className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition disabled:opacity-50"
+                        aria-label="Close modal"
                     >
                         <X className="w-6 h-6 text-gray-600 dark:text-gray-400" />
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-6 space-y-6">
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="px-6 py-6 space-y-6">
+                    {/* Task Name */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                             Task Name *
                         </label>
                         <input
                             type="text"
                             value={formData.taskName}
-                            onChange={(e) => setFormData({ ...formData, taskName: e.target.value })}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 transition"
-                            required
+                            onChange={(e) =>
+                                setFormData({ ...formData, taskName: e.target.value })
+                            }
                             disabled={loading}
                             maxLength="200"
+                            required
+                            className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition shadow-sm"
                         />
                     </div>
 
+                    {/* Description */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                             Description *
                         </label>
                         <textarea
-                            value={formData.description}
-                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                             rows="4"
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 transition resize-none"
-                            required
+                            value={formData.description}
+                            onChange={(e) =>
+                                setFormData({ ...formData, description: e.target.value })
+                            }
                             disabled={loading}
-                        ></textarea>
+                            required
+                            className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition resize-none shadow-sm"
+                        />
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Priority & Status */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Priority *
                             </label>
                             <select
                                 value={formData.priority}
-                                onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 transition"
+                                onChange={(e) =>
+                                    setFormData({ ...formData, priority: e.target.value })
+                                }
                                 disabled={loading}
+                                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 transition shadow-sm"
                             >
                                 <option value="LOW">Low</option>
                                 <option value="MEDIUM">Medium</option>
@@ -115,14 +127,16 @@ const TaskModal = ({ task, onClose, onSuccess, showNotification }) => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Status *
                             </label>
                             <select
                                 value={formData.status}
-                                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 transition"
+                                onChange={(e) =>
+                                    setFormData({ ...formData, status: e.target.value })
+                                }
                                 disabled={loading}
+                                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 transition shadow-sm"
                             >
                                 <option value="PENDING">Pending</option>
                                 <option value="IN_PROGRESS">In Progress</option>
@@ -131,48 +145,58 @@ const TaskModal = ({ task, onClose, onSuccess, showNotification }) => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Dates */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Due Date *
                             </label>
                             <input
                                 type="date"
                                 value={formData.dueDate}
-                                onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 transition"
-                                required
+                                onChange={(e) =>
+                                    setFormData({ ...formData, dueDate: e.target.value })
+                                }
                                 disabled={loading}
+                                required
+                                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 transition shadow-sm"
                             />
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
                                 Reminder Time
                             </label>
                             <input
                                 type="datetime-local"
                                 value={formData.reminderTime}
-                                onChange={(e) => setFormData({ ...formData, reminderTime: e.target.value })}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 transition"
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        reminderTime: e.target.value
+                                    })
+                                }
                                 disabled={loading}
+                                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:ring-2 focus:ring-indigo-500 transition shadow-sm"
                             />
                         </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
+                    {/* Actions */}
+                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
                         <button
                             type="submit"
                             disabled={loading}
-                            className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg transition transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                            className="flex-1 py-3 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold shadow-lg transition-all hover:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {loading ? 'Saving...' : task ? 'Update Task' : 'Create Task'}
+                            {loading ? 'Saving…' : task ? 'Update Task' : 'Create Task'}
                         </button>
+
                         <button
                             type="button"
                             onClick={onClose}
                             disabled={loading}
-                            className="flex-1 bg-gray-300 hover:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-800 dark:text-white font-semibold py-3 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 py-3 rounded-xl bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Cancel
                         </button>

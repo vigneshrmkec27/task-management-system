@@ -11,11 +11,29 @@ const Notification = ({ message, type = 'success', onClose }) => {
 
     return (
         <div
-            className={`fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg transform transition-all animate-fadeIn ${
-                type === 'error' ? 'bg-red-500' : 'bg-green-500'
-            } text-white font-semibold`}
+            role="alert"
+            aria-live="assertive"
+            className={`
+                fixed top-5 right-5 z-50
+                max-w-sm
+                px-5 py-4
+                rounded-xl
+                shadow-2xl
+                border
+                backdrop-blur-md
+                transition-all duration-300
+                animate-in slide-in-from-top-4 fade-in
+                ${
+                type === 'error'
+                    ? 'bg-red-500/90 border-red-400'
+                    : 'bg-emerald-500/90 border-emerald-400'
+            }
+                text-white
+            `}
         >
-            {message}
+            <p className="text-sm font-semibold leading-snug">
+                {message}
+            </p>
         </div>
     );
 };
